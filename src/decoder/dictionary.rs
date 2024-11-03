@@ -19,14 +19,12 @@ impl Decoder {
             let key = Self::decode_variant(&bytes[byte_pos..])?;
             byte_pos += key.byte_length();
 
-            println!("{key:?}");
             if key.as_any().is::<GodotNull>() {
                 continue;
             }
 
             let value = Self::decode_variant(&bytes[byte_pos..])?;
             byte_pos += value.byte_length();
-            println!("{value:?}");
 
             dict.map.insert(key, value);
         }

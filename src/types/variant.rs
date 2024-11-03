@@ -1,6 +1,6 @@
 use std::{fmt::Debug, hash::Hash};
 
-pub trait GodotVariant: Debug {
+pub trait GodotVariant: Debug + Send + Sync {
     fn byte_length(&self) -> usize;
 
     fn as_any(&self) -> &dyn std::any::Any;

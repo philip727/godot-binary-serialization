@@ -83,6 +83,12 @@ pub struct GodotDictionary {
     pub byte_size: usize,
 }
 
+impl GodotDictionary {
+    pub fn new_from_map(map: IndexMap<Box<dyn GodotVariant>, Box<dyn GodotVariant>>) -> Self {
+        Self { map, byte_size: 0 }
+    }
+}
+
 impl GodotVariant for GodotDictionary {
     fn byte_length(&self) -> usize {
         self.byte_size

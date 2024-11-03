@@ -153,3 +153,35 @@ impl GodotVariant for GodotString {
         self.value.as_bytes().to_vec()
     }
 }
+
+#[derive(Debug, Clone, Copy)]
+pub struct GodotBool {
+    pub value: bool,
+}
+
+impl GodotBool {
+    pub const BIT_SIZE: usize = 4;
+}
+
+impl GodotVariant for GodotBool {
+    fn byte_length(&self) -> usize {
+        TYPE_PADDING as usize + Self::BIT_SIZE
+    }
+
+
+    fn as_any(&self) -> &dyn std::any::Any {
+        self
+    }
+
+    fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
+        if let Some(other) = other.as_any().downcast_ref::<GodotBool>() {
+            self.value == other.value
+        } else {
+            false
+        }
+    }
+
+    fn bytes(&self) -> Vec<u8> {
+        format!("{:?}", self.value).as_bytes().to_vec()
+    }
+}

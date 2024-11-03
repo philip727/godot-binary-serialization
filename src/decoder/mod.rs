@@ -3,6 +3,7 @@ pub mod float;
 pub mod int;
 pub mod string;
 pub mod vector;
+pub mod bool;
 
 use anyhow::anyhow;
 use byteorder::{ByteOrder, LittleEndian};
@@ -27,6 +28,7 @@ impl Decoder {
 
         let variant: Box<dyn GodotVariant> = match type_idx {
             GodotTypeIndex::Null => Box::new(GodotNull),
+            GodotTypeIndex::Bool => Box::new(Self::decode_bool(bytes, &flag)?),
             GodotTypeIndex::Integer => Box::new(Self::decode_int(bytes, &flag)?),
             GodotTypeIndex::Float => Box::new(Self::decode_float(bytes, &flag)?),
             GodotTypeIndex::String => Box::new(Self::decode_string(bytes)?),

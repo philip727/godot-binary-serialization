@@ -11,6 +11,7 @@ pub mod float;
 pub mod int;
 pub mod string;
 pub mod vector;
+pub mod bool;
 
 pub struct Encoder;
 

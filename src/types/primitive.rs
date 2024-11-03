@@ -35,14 +35,14 @@ impl GodotInteger {
     pub fn new_from_i32(v: i32) -> Self {
         Self {
             value: v as i64,
-            byte_size: TYPE_PADDING as usize + Self::BIT_32_SIZE
+            byte_size: TYPE_PADDING as usize + Self::BIT_32_SIZE,
         }
     }
 
     pub fn new_from_i64(v: i64) -> Self {
         Self {
             value: v,
-            byte_size: TYPE_PADDING as usize + Self::BIT_64_SIZE
+            byte_size: TYPE_PADDING as usize + Self::BIT_64_SIZE,
         }
     }
 }
@@ -64,7 +64,7 @@ impl GodotVariant for GodotInteger {
     }
 
     fn bytes(&self) -> Vec<u8> {
-         self.value.to_string().as_bytes().to_vec()
+        self.value.to_string().as_bytes().to_vec()
     }
 }
 
@@ -80,14 +80,14 @@ impl GodotFloat {
     pub fn new_from_f32(v: f32) -> Self {
         Self {
             value: v as f64,
-            byte_size: TYPE_PADDING as usize + Self::BIT_32_SIZE
+            byte_size: TYPE_PADDING as usize + Self::BIT_32_SIZE,
         }
     }
 
     pub fn new_from_f64(v: f64) -> Self {
         Self {
             value: v,
-            byte_size: TYPE_PADDING as usize + Self::BIT_64_SIZE
+            byte_size: TYPE_PADDING as usize + Self::BIT_64_SIZE,
         }
     }
 }
@@ -110,7 +110,7 @@ impl GodotVariant for GodotFloat {
     }
 
     fn bytes(&self) -> Vec<u8> {
-         self.value.to_string().as_bytes().to_vec()
+        self.value.to_string().as_bytes().to_vec()
     }
 }
 
@@ -127,7 +127,7 @@ impl GodotString {
         let pad = (4 - (length % 4)) % 4;
         Self {
             value: s.to_owned(),
-            byte_size: TYPE_PADDING as usize + pad + length
+            byte_size: TYPE_PADDING as usize + pad + length,
         }
     }
 }
@@ -161,13 +161,16 @@ pub struct GodotBool {
 
 impl GodotBool {
     pub const BIT_SIZE: usize = 4;
+
+    pub fn new(r#bool: bool) -> Self {
+        Self { value: r#bool }
+    }
 }
 
 impl GodotVariant for GodotBool {
     fn byte_length(&self) -> usize {
         TYPE_PADDING as usize + Self::BIT_SIZE
     }
-
 
     fn as_any(&self) -> &dyn std::any::Any {
         self

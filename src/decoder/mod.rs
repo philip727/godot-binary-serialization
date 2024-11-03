@@ -24,6 +24,10 @@ impl Decoder {
     }
 
     pub fn decode_variant(bytes: &[u8]) -> anyhow::Result<Box<dyn GodotVariant + 'static>> {
+        if bytes.is_empty() {
+            return Err(anyhow!("Empty bytes"));
+        }
+
         let (type_idx, flag) = Self::get_type_and_flags(bytes)?;
 
         let variant: Box<dyn GodotVariant> = match type_idx {

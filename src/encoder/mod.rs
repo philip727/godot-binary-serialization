@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 
 use crate::types::{
-    primitive::{GodotFloat, GodotInteger, GodotString},
+    primitive::{GodotBool, GodotFloat, GodotInteger, GodotString},
     structures::{GodotDictionary, GodotVector2, GodotVector3},
     variant::GodotVariant,
 };
@@ -17,6 +17,10 @@ pub struct Encoder;
 
 impl Encoder {
     pub fn encode_variant(variant: &dyn GodotVariant) -> anyhow::Result<Vec<u8>> {
+        if let Some(bool) = variant.as_any().downcast_ref::<GodotBool>() {
+            return Self::encode_bool(bool);
+        }
+
         if let Some(integer) = variant.as_any().downcast_ref::<GodotInteger>() {
             return Self::encode_int(integer);
         }

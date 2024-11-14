@@ -1,6 +1,9 @@
 # Godot Binary Serialization
 Allows us to serialize and deserialize types based on [Godot's Binary Serialization API](https://docs.godotengine.org/en/stable/tutorials/io/binary_serialization_api.html)
 
+## Getting started
+Add the crate to your project from [crates.io](https://crates.io/crates/godot-binary-serialization)
+
 ## Goals
 - Write server infrastructure for Godot games outside of the engine and outside of Godot's supported languages.
 - Rust has an extensive library ecosystem(the <b>Cargo</b> ecosystem), allowing you to offload different tasks on an external server that may

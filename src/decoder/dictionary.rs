@@ -10,7 +10,7 @@ impl Decoder {
     ///
     /// # Example
     ///
-    /// ```
+    /// ```rust,ignore
     /// // Typically you would get this from a network request
     /// let bytes = /* Pretend we have valid bytes here */
     ///
@@ -58,7 +58,7 @@ impl Decoder {
 mod tests {
     use crate::{
         decoder::Decoder,
-        types::{primitive::GodotString, variant::GodotVariant},
+        types::{primitive::GodotString, structures::GodotVector2, variant::GodotVariant},
     };
 
     #[test]
@@ -71,9 +71,7 @@ mod tests {
         ];
 
         let dict = Decoder::decode_dictionary(&bytes).unwrap();
-        let key = Box::new(GodotString::new("position")) as Box<dyn GodotVariant>;
-
-        let value = dict.map.get(&key);
+        let value = dict.get::<GodotVector2>(GodotString::new("position"));
 
         println!("{:?}", value);
         println!("{:?}", dict);

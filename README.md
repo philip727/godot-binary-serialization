@@ -83,32 +83,17 @@ ___
 
 Sending a dictionary
 ```rs
-// Dictionaries use the indexmap crate due to the nature that key:value pairs keep their inserted position in Godot
-use indexmap::IndexMap;
+// We can simply create a godot dictionary as such
+let mut dict = GodotDictionary::new();
 
-// Dictionaries require a lot more boiler plate due to Godot's type system. Dictionaries can consist of
-// any variant in the key or value slot, regardless of other types in the dictionary
-let mut hashmap = IndexMap::new();
-// Creates a key value pair with a string key of "position" and a value of Vector3
-hashmap.insert(
-    /// Due to the size of the type being unknown we must put the variant on the heap
-    Box::new(GodotString::new("position")) as Box<dyn GodotVariant>,
-    // Variants must be cast "as Box<dyn GodotVariant>" for this to work
-    Box::new(GodotVector3::new(0.52, 502.0, 68.0)) as Box<dyn GodotVariant>,
-);
-hashmap.insert(
-    Box::new(GodotString::new("id")) as Box<dyn GodotVariant>,
-    Box::new(GodotInteger::new_from_i32(693)) as Box<dyn GodotVariant>,
-);
-
-// We can now create the dictionary from an index map
-// Godot Dictionary structs contain a field called "byte_size" this is not needed unless decoding
-// so this call just fills it in as 0
-let dictionary = GodotDictionary::new_from_map(hashmap);
+// And insert values just as if it was a hashmap. The values must impl GodotVariant and the types
+// don't have to match for each key/value
+dict.insert(GodotString::new("position"), GodotVector3::new(0.52, 502.0, 68.0));
+dict.insert(GodotString::new("id"), GodotInteger::new_from_i32(693));
 
 // We can just call this function and the encoder will do turn it into bytes
 // This will only fail if the type is unsupported or for some reason we cant write bytes to the buffer. It can only take in anything that impl GodotVariant
-let Ok(bytes) = Encoder::encode_variant(string) else {
+let Ok(bytes) = Encoder::encode_variant(dict) else {
     panic!("Failed to encode variant")
 };
 
@@ -129,11 +114,8 @@ let Ok(dictionary) = Decoder::decode_variant(&bytes) else {
     panic!("Invalid bytes");
 }
 
-// Assuming the dictionary has a key value pair that has a key of "position"
-let key = Box::new(GodotString::new("position")) as Box<dyn GodotVariant>;
-
-// We can get the value now with this key
-let Some(value) = dictionary.map.get(&key) else {
+// Assuming the dictionary has a key value pair that has a key of "position" with type Vector3
+let Some(value) = dictionary.get::<Vector3>(GodotString::new("position")) else {
     panic!("Value not in dictionary");
 };
 

@@ -1,5 +1,7 @@
 use indexmap::IndexMap;
 
+use crate::decoder::dictionary;
+
 use super::{variant::GodotVariant, TYPE_PADDING};
 
 /// A Vector 2 from godot
@@ -85,8 +87,45 @@ pub struct GodotDictionary {
 }
 
 impl GodotDictionary {
+    /// Gets a value from a dictionary
+    pub fn get<V>(&self, key: impl GodotVariant + 'static) -> Option<&V>
+    where
+        V: GodotVariant + 'static,
+    {
+        let key = Box::new(key) as Box<dyn GodotVariant>;
+
+        let value = self.map.get(&key)?;
+
+        value.as_any().downcast_ref::<V>()
+    }
+
+    /// Inserst a value into a dictionary
+    pub fn insert<K, V>(&mut self, key: K, value: V)
+    where
+        K: GodotVariant + 'static,
+        V: GodotVariant + 'static,
+    {
+        let key = Box::new(key) as Box<dyn GodotVariant>;
+        let value = Box::new(value) as Box<dyn GodotVariant>;
+        self.map.insert(key, value);
+    }
+
+    /// Creates a dictionary that is empty
+    pub fn new() -> Self {
+        Self {
+            map: IndexMap::new(),
+            byte_size: 0,
+        }
+    }
+
     pub fn new_from_map(map: IndexMap<Box<dyn GodotVariant>, Box<dyn GodotVariant>>) -> Self {
         Self { map, byte_size: 0 }
+    }
+}
+
+impl Default for GodotDictionary {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

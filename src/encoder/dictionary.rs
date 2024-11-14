@@ -11,7 +11,7 @@ impl Encoder {
     /// 
     /// Due to the nature of Godot's type system, key's and value's can be different types. Due to
     /// the nature of Rust, this adds quite a bit of overhead to creating a Dictionary
-    /// ```
+    /// ```json
     /// { "key": "value", "key2": 42, Vector3(45, 2, 9): 9529 }
     /// ```
     pub fn encode_dictionary(dictionary: &GodotDictionary) -> anyhow::Result<Vec<u8>> {
@@ -37,14 +37,11 @@ impl Encoder {
 
 #[cfg(test)]
 mod test {
-    use indexmap::IndexMap;
-
     use crate::{
         encoder::Encoder,
         types::{
             primitive::{GodotInteger, GodotString},
             structures::{GodotDictionary, GodotVector3},
-            variant::GodotVariant,
         },
     };
 
@@ -57,20 +54,9 @@ mod test {
         ]
         .to_vec();
 
-        let mut hashmap = IndexMap::new();
-        hashmap.insert(
-            Box::new(GodotString::new("position")) as Box<dyn GodotVariant>,
-            Box::new(GodotVector3::new(0.52, 502.0, 68.0)) as Box<dyn GodotVariant>,
-        );
-        hashmap.insert(
-            Box::new(GodotString::new("id")) as Box<dyn GodotVariant>,
-            Box::new(GodotInteger::new_from_i32(693)) as Box<dyn GodotVariant>,
-        );
-
-        let dict = GodotDictionary {
-            map: hashmap,
-            byte_size: 0,
-        };
+        let mut dict = GodotDictionary::new();
+        dict.insert(GodotString::new("position"), GodotVector3::new(0.52, 502.0, 68.0));
+        dict.insert(GodotString::new("id"), GodotInteger::new_from_i32(693));
 
         let bytes = Encoder::encode_dictionary(&dict).unwrap();
         assert_eq!(

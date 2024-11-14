@@ -118,12 +118,12 @@ socket.broadcast(bytes, PacketDelivery::Unreliable);
 ```
 ___
 
-Receiving a dictionary and using it's values
+Recieving a dictionary and using it's values
 ```rs
 // Typically this would be recieved from the UDP socket and serialized in Godot with "var2bytes"
 let bytes = /* Pretend we have valid bytes here */
 
-// You must know the type that has been received from Godot. In this example we know that
+// You must know the type that has been recieved from Godot. In this example we know that
 // the client has sent us a dictionary
 let Ok(dictionary) = Decoder::decode_variant(&bytes) else {
     panic!("Invalid bytes");

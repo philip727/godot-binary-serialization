@@ -1,9 +1,17 @@
 [package]
-name = "godot-serializer-rs"
+name = "godot-binary-serialization"
 version = "0.1.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+keywords = ["godot", "binary", "serialization", "network"]
+categories = ["game-development", "parsing"]
+description = "A Godot binary serializer to encode & decode types from & to godot"
+repository = "https://github.com/philip727/godot-binary-serialization"
+
+readme = "README.md"
 
 [dependencies]
 anyhow = "1.0.92"
 byteorder = "1.5.0"
 indexmap = "2.6.0"
+

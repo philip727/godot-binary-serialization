@@ -1,4 +1,4 @@
-### Godot Binary Serialization
+# Godot Binary Serialization
 Allows us to serialize and deserialize types based on [Godot's Binary Serialization API](https://docs.godotengine.org/en/stable/tutorials/io/binary_serialization_api.html)
 
 ## Goals

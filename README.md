@@ -119,11 +119,8 @@ let Some(value) = dictionary.get::<Vector3>(GodotString::new("position")) else {
     panic!("Value not in dictionary");
 };
 
-// To get the value of the type we must downcast_ref it
-if let Some(vector3) = value.as_any().downcast_ref::<GodotVector3>() {
-    let x = vector3.x;
-    let y = vector3.y;
-    let z = vector3.z;
-    println!("BANANA AT ({}, {}, {}) AAAAAA", x, y, z);
-}
+let x = value.x;
+let y = value.y;
+let z = value.z;
+println!("BANANA AT ({}, {}, {}) AAAAAA", x, y, z);
 ```

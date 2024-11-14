@@ -2,6 +2,7 @@ use std::hash::Hash;
 
 use super::{variant::GodotVariant, TYPE_PADDING};
 
+/// Null Godot value
 #[derive(Debug)]
 pub struct GodotNull;
 
@@ -23,6 +24,7 @@ impl GodotVariant for GodotNull {
     }
 }
 
+/// An integer from godot
 #[derive(Debug, Clone, Copy)]
 pub struct GodotInteger {
     pub value: i64,
@@ -68,6 +70,7 @@ impl GodotVariant for GodotInteger {
     }
 }
 
+/// A float from godot
 #[derive(Debug, Clone, Copy)]
 pub struct GodotFloat {
     pub value: f64,
@@ -114,6 +117,7 @@ impl GodotVariant for GodotFloat {
     }
 }
 
+/// A String from godot
 #[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct GodotString {
     pub value: String,
@@ -154,6 +158,7 @@ impl GodotVariant for GodotString {
     }
 }
 
+/// A bool from godot
 #[derive(Debug, Clone, Copy)]
 pub struct GodotBool {
     pub value: bool,

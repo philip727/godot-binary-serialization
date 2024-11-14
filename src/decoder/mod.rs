@@ -8,21 +8,25 @@ pub mod bool;
 use anyhow::anyhow;
 use byteorder::{ByteOrder, LittleEndian};
 
-use crate::types::{primitive::GodotNull, variant::GodotVariant, EncodeFlag, GodotTypeIndex};
+use crate::types::{primitive::GodotNull, variant::GodotVariant, SerializeFlag, GodotTypeIndex};
 
 pub struct Decoder;
 
 impl Decoder {
-    pub fn get_type_and_flags(bytes: &[u8]) -> anyhow::Result<(GodotTypeIndex, EncodeFlag)> {
+    /// Gets the type and flags of the bytes passed. The type determines which type we should try
+    /// and decode it as, and the flag shows how we will decode the type
+    pub fn get_type_and_flags(bytes: &[u8]) -> anyhow::Result<(GodotTypeIndex, SerializeFlag)> {
         let Ok(type_idx) = GodotTypeIndex::try_from(LittleEndian::read_u16(&bytes[0..2])) else {
             return Err(anyhow!("Unsupported type index"));
         };
         let flag =
-            EncodeFlag::try_from(LittleEndian::read_u16(&bytes[2..4])).unwrap_or(EncodeFlag::None);
+            SerializeFlag::try_from(LittleEndian::read_u16(&bytes[2..4])).unwrap_or(SerializeFlag::None);
 
         Ok((type_idx, flag))
     }
 
+    /// Decodes bytes into it's respective Godot variant. This can fail if the bytes does not match
+    /// Godot's serialization rules or it's an unsupported type.
     pub fn decode_variant(bytes: &[u8]) -> anyhow::Result<Box<dyn GodotVariant + 'static>> {
         if bytes.is_empty() {
             return Err(anyhow!("Empty bytes"));

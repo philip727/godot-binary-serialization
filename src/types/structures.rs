@@ -1,9 +1,8 @@
-use std::collections::HashMap;
-
 use indexmap::IndexMap;
 
 use super::{variant::GodotVariant, TYPE_PADDING};
 
+/// A Vector 2 from godot
 #[derive(PartialEq, Debug, Clone, Copy)]
 pub struct GodotVector2 {
     pub x: f32,
@@ -38,6 +37,7 @@ impl GodotVariant for GodotVector2 {
     }
 }
 
+/// A Vector 3 from godot
 #[derive(PartialEq, Debug, Clone, Copy)]
 pub struct GodotVector3 {
     pub x: f32,
@@ -77,6 +77,7 @@ impl GodotVariant for GodotVector3 {
     }
 }
 
+/// A Dictionary from godot, similar to an object in javascript, it consists of key:value pairs
 #[derive(Debug)]
 pub struct GodotDictionary {
     pub map: IndexMap<Box<dyn GodotVariant>, Box<dyn GodotVariant>>,

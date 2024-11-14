@@ -1,23 +1,25 @@
 use anyhow::anyhow;
 use byteorder::{ByteOrder, LittleEndian};
 
-use crate::types::{primitive::GodotFloat, EncodeFlag, TYPE_PADDING};
+use crate::types::{primitive::GodotFloat, SerializeFlag, TYPE_PADDING};
 
 use super::Decoder;
 
 impl Decoder {
-    pub fn decode_float(bytes: &[u8], flag: &EncodeFlag) -> anyhow::Result<GodotFloat> {
+    /// Decodes a bytes into a Godot float
+    pub fn decode_float(bytes: &[u8], flag: &SerializeFlag) -> anyhow::Result<GodotFloat> {
         Self::decode_raw_float(bytes, 4, flag)
     }
 
+    /// Uses a serialization flag and the offset in bytes to decode bytes into a Godot float
     pub fn decode_raw_float(
         bytes: &[u8],
         offset: usize,
-        flag: &EncodeFlag,
+        flag: &SerializeFlag,
     ) -> anyhow::Result<GodotFloat> {
         let mut length = 4;
 
-        if flag == &EncodeFlag::Bit64 {
+        if flag == &SerializeFlag::Bit64 {
             length = 8;
         }
 
@@ -27,7 +29,7 @@ impl Decoder {
             ));
         }
 
-        if flag == &EncodeFlag::Bit64 {
+        if flag == &SerializeFlag::Bit64 {
             return Ok(GodotFloat {
                 value: LittleEndian::read_f64(&bytes[offset..offset + length]),
                 byte_size: TYPE_PADDING as usize + length,

@@ -1,14 +1,16 @@
 use byteorder::{ByteOrder, LittleEndian};
 
-use crate::types::{primitive::GodotString, EncodeFlag, GodotTypeIndex};
+use crate::types::{primitive::GodotString, SerializeFlag, GodotTypeIndex};
 
 use super::Encoder;
 
 impl Encoder {
+    /// Encodes a Godot String into bytes
     pub fn encode_string(string: &GodotString) -> anyhow::Result<Vec<u8>> {
         Ok(Self::encode_owned_string(string.value.clone()))
     }
 
+    /// Encodes an owned String into bytes
     pub fn encode_owned_string(string: String) -> Vec<u8> {
         let length = string.len();
         let pad = (4 - (length % 4)) % 4;
@@ -16,13 +18,14 @@ impl Encoder {
         let mut bytes = vec![0; total_length];
 
         LittleEndian::write_i16(&mut bytes[0..2], GodotTypeIndex::String as i16);
-        LittleEndian::write_i16(&mut bytes[2..4], EncodeFlag::None as i16);
+        LittleEndian::write_i16(&mut bytes[2..4], SerializeFlag::None as i16);
         LittleEndian::write_i32(&mut bytes[4..8], length as i32);
         bytes[8..8 + length].copy_from_slice(string.as_bytes());
 
         bytes
     }
 
+    /// Encodes a str into bytes
     pub fn encode_str(string: &str) -> Vec<u8> {
         Self::encode_owned_string(string.to_owned())
     }

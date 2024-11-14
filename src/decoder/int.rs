@@ -1,23 +1,25 @@
 use anyhow::anyhow;
 use byteorder::{ByteOrder, LittleEndian};
 
-use crate::types::{primitive::GodotInteger, EncodeFlag, TYPE_PADDING};
+use crate::types::{primitive::GodotInteger, SerializeFlag, TYPE_PADDING};
 
 use super::Decoder;
 
 impl Decoder {
-    pub fn decode_int(bytes: &[u8], flag: &EncodeFlag) -> anyhow::Result<GodotInteger> {
+    /// Decodes bytes into a Godot integer
+    pub fn decode_int(bytes: &[u8], flag: &SerializeFlag) -> anyhow::Result<GodotInteger> {
         Self::decode_raw_int(bytes, 4, flag)
     }
 
+    /// Uses a serialization flag and the offset in bytes to decode bytes into a Godot integer
     pub fn decode_raw_int(
         bytes: &[u8],
         offset: usize,
-        flag: &EncodeFlag,
+        flag: &SerializeFlag,
     ) -> anyhow::Result<GodotInteger> {
         let mut length = 4;
 
-        if flag == &EncodeFlag::Bit64 {
+        if flag == &SerializeFlag::Bit64 {
             length = 8;
         }
 
@@ -27,7 +29,7 @@ impl Decoder {
             ));
         }
 
-        if flag == &EncodeFlag::Bit64 {
+        if flag == &SerializeFlag::Bit64 {
             return Ok(GodotInteger {
                 value: LittleEndian::read_i64(&bytes[offset..offset + length]),
                 byte_size: TYPE_PADDING as usize + length,

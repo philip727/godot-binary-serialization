@@ -6,6 +6,25 @@ use crate::types::{primitive::GodotNull, structures::GodotDictionary};
 use super::Decoder;
 
 impl Decoder {
+    /// Decodes bytes into a godot dictionary.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // Typically you would get this from a network request
+    /// let bytes = /* Pretend we have valid bytes here */
+    ///
+    /// let Ok(dictionary) = Decoder::decode_dictionary(&bytes) else {
+    ///     panic!("Invalid bytes");
+    /// }
+    ///
+    /// // Assuming the dictionary has a key value pair that has a key of "position"
+    /// let key = Box::new(GodotString::new("position")) as Box<dyn GodotVariant>;
+    ///
+    /// // We can get the value now with this key
+    /// let value = dictionary.map.get(&key);
+    ///
+    /// ```
     pub fn decode_dictionary(bytes: &[u8]) -> anyhow::Result<GodotDictionary> {
         let mut dict = GodotDictionary {
             map: IndexMap::new(),

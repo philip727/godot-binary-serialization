@@ -2,26 +2,28 @@ use byteorder::{ByteOrder, LittleEndian};
 
 use crate::types::{
     structures::{GodotVector2, GodotVector3},
-    EncodeFlag, GodotTypeIndex,
+    SerializeFlag, GodotTypeIndex,
 };
 
 use super::Encoder;
 
 impl Encoder {
+    /// Encodes a Vector2 into bytes
     pub fn encode_vector2(vec2: &GodotVector2) -> anyhow::Result<Vec<u8>> {
         let bytes = &mut [0; 12];
         LittleEndian::write_i16(&mut bytes[0..2], GodotTypeIndex::Vector2 as i16);
-        LittleEndian::write_i16(&mut bytes[2..4], EncodeFlag::None as i16);
+        LittleEndian::write_i16(&mut bytes[2..4], SerializeFlag::None as i16);
         LittleEndian::write_f32(&mut bytes[4..8], vec2.x);
         LittleEndian::write_f32(&mut bytes[8..12], vec2.y);
 
         Ok(bytes.to_vec())
     }
 
+    /// Encodes a Vector3 into bytes
     pub fn encode_vector3(vec3: &GodotVector3) -> anyhow::Result<Vec<u8>> {
         let bytes = &mut [0; 16];
         LittleEndian::write_i16(&mut bytes[0..2], GodotTypeIndex::Vector3 as i16);
-        LittleEndian::write_i16(&mut bytes[2..4], EncodeFlag::None as i16);
+        LittleEndian::write_i16(&mut bytes[2..4], SerializeFlag::None as i16);
         LittleEndian::write_f32(&mut bytes[4..8], vec3.x);
         LittleEndian::write_f32(&mut bytes[8..12], vec3.y);
         LittleEndian::write_f32(&mut bytes[12..16], vec3.z);

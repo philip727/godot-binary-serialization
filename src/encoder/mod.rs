@@ -13,9 +13,11 @@ pub mod string;
 pub mod vector;
 pub mod bool;
 
+/// Encodes a variant from its type into bytes
 pub struct Encoder;
 
 impl Encoder {
+    /// Takes in a Godot variant and determines how to encode it based on its type
     pub fn encode_variant(variant: &dyn GodotVariant) -> anyhow::Result<Vec<u8>> {
         if let Some(bool) = variant.as_any().downcast_ref::<GodotBool>() {
             return Self::encode_bool(bool);

@@ -4,24 +4,29 @@ pub mod structures;
 
 pub const TYPE_PADDING: u8 = 4;
 
+/// The different serialization flags from Godot's binary serialization
 #[derive(PartialEq, Eq, Debug)]
-pub enum EncodeFlag {
+pub enum SerializeFlag {
+    /// The encoder has no flags
     None = 0,
+    /// Used for integers and floats, shows whether they are represented as a 64 bit or 32 bit
+    /// value. 0 = 32 bit, 1 = 64 Bit
     Bit64 = 1,
 }
 
-impl TryFrom<u16> for EncodeFlag {
+impl TryFrom<u16> for SerializeFlag {
     type Error = ();
 
-    fn try_from(value: u16) -> Result<EncodeFlag, Self::Error> {
+    fn try_from(value: u16) -> Result<SerializeFlag, Self::Error> {
         match value {
-            0 => Ok(EncodeFlag::None),
-            1 => Ok(EncodeFlag::Bit64),
+            0 => Ok(SerializeFlag::None),
+            1 => Ok(SerializeFlag::Bit64),
             _ => Err(()),
         }
     }
 }
 
+/// The Godot type indexes based on Godot's binary serialization API
 #[derive(PartialEq, Eq, Debug)]
 pub enum GodotTypeIndex {
     Null = 0,

@@ -1,10 +1,19 @@
 use byteorder::{LittleEndian, WriteBytesExt};
 
-use crate::types::{structures::GodotDictionary, EncodeFlag, GodotTypeIndex};
+use crate::types::{structures::GodotDictionary, SerializeFlag, GodotTypeIndex};
 
 use super::Encoder;
 
 impl Encoder {
+    /// Encodes a Godot dictionary into bytes. A godot dictionary consists of key value pairs.
+    /// 
+    /// # Example
+    /// 
+    /// Due to the nature of Godot's type system, key's and value's can be different types. Due to
+    /// the nature of Rust, this adds quite a bit of overhead to creating a Dictionary
+    /// ```
+    /// { "key": "value", "key2": 42, Vector3(45, 2, 9): 9529 }
+    /// ```
     pub fn encode_dictionary(dictionary: &GodotDictionary) -> anyhow::Result<Vec<u8>> {
         let mut bytes: Vec<u8> = Vec::new();
 
@@ -12,7 +21,7 @@ impl Encoder {
         let length = iterator.len();
 
         bytes.write_i16::<LittleEndian>(GodotTypeIndex::Dictionary as i16)?;
-        bytes.write_i16::<LittleEndian>(EncodeFlag::None as i16)?;
+        bytes.write_i16::<LittleEndian>(SerializeFlag::None as i16)?;
         bytes.write_i32::<LittleEndian>(length as i32)?;
 
         for (key, value) in iterator {

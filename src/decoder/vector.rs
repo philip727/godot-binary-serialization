@@ -1,22 +1,26 @@
 use crate::types::{
     structures::{GodotVector2, GodotVector3},
-    EncodeFlag,
+    SerializeFlag,
 };
 
 use super::Decoder;
 
 impl Decoder {
+    /// Decodes bytes into a vector 2. This will fail if the inner bytes can't be decoded into a
+    /// float
     pub fn decode_vector2(bytes: &[u8]) -> anyhow::Result<GodotVector2> {
-        let x = Decoder::decode_raw_float(bytes, 4, &EncodeFlag::None)?.value as f32;
-        let y = Decoder::decode_raw_float(bytes, 8, &EncodeFlag::None)?.value as f32;
+        let x = Decoder::decode_raw_float(bytes, 4, &SerializeFlag::None)?.value as f32;
+        let y = Decoder::decode_raw_float(bytes, 8, &SerializeFlag::None)?.value as f32;
 
         Ok(GodotVector2 { x, y })
     }
 
+    /// Decodes bytes into a vector 3. This will fail if the inner bytes can't be decoded into a
+    /// float
     pub fn decode_vector3(bytes: &[u8]) -> anyhow::Result<GodotVector3> {
-        let x = Decoder::decode_raw_float(bytes, 4, &EncodeFlag::None)?.value as f32;
-        let y = Decoder::decode_raw_float(bytes, 8, &EncodeFlag::None)?.value as f32;
-        let z = Decoder::decode_raw_float(bytes, 12, &EncodeFlag::None)?.value as f32;
+        let x = Decoder::decode_raw_float(bytes, 4, &SerializeFlag::None)?.value as f32;
+        let y = Decoder::decode_raw_float(bytes, 8, &SerializeFlag::None)?.value as f32;
+        let z = Decoder::decode_raw_float(bytes, 12, &SerializeFlag::None)?.value as f32;
 
         Ok(GodotVector3 { x, y, z })
     }

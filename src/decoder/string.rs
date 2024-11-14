@@ -6,6 +6,8 @@ use crate::types::primitive::GodotString;
 use super::Decoder;
 
 impl Decoder {
+    /// Decodes bytes into a Godot string. This will fail if the bytes do not match Godot's
+    /// serialization rules
     pub fn decode_string(bytes: &[u8]) -> anyhow::Result<GodotString> {
         if bytes.len() < 8 {
             return Err(anyhow!("Not enough bytes for a string"));

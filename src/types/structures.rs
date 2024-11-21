@@ -1,7 +1,5 @@
 use indexmap::IndexMap;
 
-use crate::decoder::dictionary;
-
 use super::{variant::{AsVariant, GodotVariant}, TYPE_PADDING};
 
 /// A Vector 2 from godot

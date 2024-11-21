@@ -5,16 +5,14 @@ Allows us to serialize and deserialize types based on [Godot's Binary Serializat
 Add the crate to your project from [crates.io](https://crates.io/crates/godot-binary-serialization)
 
 ## Goals
-- Write server infrastructure for Godot games outside of the engine and outside of Godot's supported languages.
-- Rust has an extensive library ecosystem(the <b>Cargo</b> ecosystem), allowing you to offload different tasks on an external server that may
-not be possible when confined to the Godot engine.
+- Write server infrastructure for Godot games outside of the engine.
 
 
 ## Why an external server?
 - Gives you complete control over how the server is created, run, expanded and secured.
 - Godot games are very easy to reverse. Any server code written in the engine can be easily viewed with tools
 such as [gdsdecomp](https://github.com/bruvzg/gdsdecomp).
-- Writing a server in languages such as Rust gives you easy access to high performance, memory safe and multi-threaded code.
+- Writing a server in languages such as Rust gives you easy access to memory safety and multi-threading.
 
 ## Supported types
 

@@ -29,3 +29,14 @@ impl Hash for Box<dyn GodotVariant> {
         self.bytes().hash(state)
     }
 }
+
+/// Converts a type to a variant godot type
+pub trait AsVariant {
+    fn as_var<T>(&self) -> Option<&T> where T: GodotVariant + 'static;
+}
+
+impl AsVariant for dyn GodotVariant + '_ {
+    fn as_var<T>(&self) -> Option<&T> where T: GodotVariant + Send + Sync + 'static {
+        self.as_any().downcast_ref::<T>()
+    }
+}

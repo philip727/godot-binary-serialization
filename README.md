@@ -55,7 +55,7 @@ let variant = Decoder::decode_variant(&bytes);
 
 // You must know the type that has been received from Godot. In this example we know that
 // the client has sent us a string
-let Some(string) = variant.as_any().downcast_ref::<GodotString>() else {
+let Some(string) = variant.as_var::<GodotString>() else {
     panic!("DIDNT RECIEVE A STRING");
 };
 

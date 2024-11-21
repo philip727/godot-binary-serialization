@@ -1,6 +1,6 @@
 use std::hash::Hash;
 
-use super::{variant::GodotVariant, TYPE_PADDING};
+use super::{variant::{AsVariant, GodotVariant}, TYPE_PADDING};
 
 /// Null Godot value
 #[derive(Debug)]
@@ -16,7 +16,7 @@ impl GodotVariant for GodotNull {
     }
 
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        other.as_any().downcast_ref::<GodotNull>().is_some()
+        other.as_var::<GodotNull>().is_some()
     }
 
     fn bytes(&self) -> Vec<u8> {
@@ -58,7 +58,7 @@ impl GodotVariant for GodotInteger {
     }
 
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        if let Some(other) = other.as_any().downcast_ref::<GodotInteger>() {
+        if let Some(other) = other.as_var::<GodotInteger>() {
             self.value == other.value
         } else {
             false
@@ -105,7 +105,7 @@ impl GodotVariant for GodotFloat {
     }
 
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        if let Some(other) = other.as_any().downcast_ref::<GodotFloat>() {
+        if let Some(other) = other.as_var::<GodotFloat>() {
             self.value == other.value
         } else {
             false
@@ -146,7 +146,7 @@ impl GodotVariant for GodotString {
     }
 
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        if let Some(other) = other.as_any().downcast_ref::<GodotString>() {
+        if let Some(other) = other.as_var::<GodotString>() {
             self.value == other.value
         } else {
             false
@@ -182,7 +182,7 @@ impl GodotVariant for GodotBool {
     }
 
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        if let Some(other) = other.as_any().downcast_ref::<GodotBool>() {
+        if let Some(other) = other.as_var::<GodotBool>() {
             self.value == other.value
         } else {
             false

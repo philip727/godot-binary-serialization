@@ -2,7 +2,7 @@ use indexmap::IndexMap;
 
 use crate::decoder::dictionary;
 
-use super::{variant::GodotVariant, TYPE_PADDING};
+use super::{variant::{AsVariant, GodotVariant}, TYPE_PADDING};
 
 /// A Vector 2 from godot
 #[derive(PartialEq, Debug, Clone, Copy)]
@@ -27,7 +27,7 @@ impl GodotVariant for GodotVector2 {
         self
     }
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        if let Some(other) = other.as_any().downcast_ref::<GodotVector2>() {
+        if let Some(other) = other.as_var::<GodotVector2>() {
             self.x == other.x && self.y == other.y
         } else {
             false
@@ -65,7 +65,7 @@ impl GodotVariant for GodotVector3 {
     }
 
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        if let Some(other) = other.as_any().downcast_ref::<GodotVector3>() {
+        if let Some(other) = other.as_var::<GodotVector3>() {
             self.x == other.x && self.y == other.y && self.z == other.z
         } else {
             false
@@ -96,7 +96,7 @@ impl GodotDictionary {
 
         let value = self.map.get(&key)?;
 
-        value.as_any().downcast_ref::<V>()
+        value.as_var::<V>()
     }
 
     /// Inserst a value into a dictionary
@@ -139,7 +139,7 @@ impl GodotVariant for GodotDictionary {
     }
 
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
-        if let Some(other) = other.as_any().downcast_ref::<GodotDictionary>() {
+        if let Some(other) = other.as_var::<GodotDictionary>() {
             for (key, value) in self.map.iter() {
                 for (okey, ovalue) in other.map.iter() {
                     if key != okey || value == ovalue {

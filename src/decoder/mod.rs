@@ -35,7 +35,7 @@ impl Decoder {
         let (type_idx, flag) = Self::get_type_and_flags(bytes)?;
 
         let variant: Box<dyn GodotVariant> = match type_idx {
-            GodotTypeIndex::Null => Box::new(GodotNull),
+            GodotTypeIndex::Nil => Box::new(GodotNull),
             GodotTypeIndex::Bool => Box::new(Self::decode_bool(bytes, &flag)?),
             GodotTypeIndex::Integer => Box::new(Self::decode_int(bytes, &flag)?),
             GodotTypeIndex::Float => Box::new(Self::decode_float(bytes, &flag)?),

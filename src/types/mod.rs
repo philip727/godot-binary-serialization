@@ -29,7 +29,7 @@ impl TryFrom<u16> for SerializeFlag {
 /// The Godot type indexes based on Godot's binary serialization API
 #[derive(PartialEq, Eq, Debug)]
 pub enum GodotTypeIndex {
-    Null = 0,
+    Nil = 0,
     Bool = 1,
     Integer = 2,
     Float = 3,
@@ -64,7 +64,7 @@ impl TryFrom<u16> for GodotTypeIndex {
     type Error = ();
     fn try_from(value: u16) -> Result<Self, Self::Error> {
         match value {
-            0 => Ok(GodotTypeIndex::Null),
+            0 => Ok(GodotTypeIndex::Nil),
             1 => Ok(GodotTypeIndex::Bool),
             2 => Ok(GodotTypeIndex::Integer),
             3 => Ok(GodotTypeIndex::Float),

@@ -1,6 +1,6 @@
 use std::{fmt::Debug, hash::Hash};
 
-/// Describes the variant so we can send this back to godot with correct encoding
+/// Describes a godot variant
 pub trait GodotVariant: Debug + Send + Sync {
     /// Describes the byte length of a variant, most primitive variants have a static byte length.
     /// However some variants like a dictionary may have dynamic sizes

@@ -139,8 +139,8 @@ impl GodotVariant for GodotDictionary {
     fn variant_eq(&self, other: &dyn GodotVariant) -> bool {
         if let Some(other) = other.as_var::<GodotDictionary>() {
             for (key, value) in self.map.iter() {
-                for (okey, ovalue) in other.map.iter() {
-                    if key != okey || value == ovalue {
+                for (o_key, o_value) in other.map.iter() {
+                    if key != o_key || value == o_value {
                         return false;
                     }
                 }
